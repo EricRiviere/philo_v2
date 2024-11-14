@@ -6,7 +6,7 @@
 /*   By: eriviere <eriviere@student.42barcelon      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/13 10:41:47 by eriviere          #+#    #+#             */
-/*   Updated: 2024/11/13 17:21:13 by eriviere         ###   ########.fr       */
+/*   Updated: 2024/11/14 09:21:29 by eriviere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ void	wait_all_threads(t_table *table)
 
 bool	all_threads_running(t_mtx *mutex, long *threads, long philo_nbr)
 {
-	bool ret;
+	bool	ret;
 
 	ret = false;
 	safe_mutex(mutex, LOCK);

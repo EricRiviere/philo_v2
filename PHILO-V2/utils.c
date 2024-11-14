@@ -6,7 +6,7 @@
 /*   By: eriviere <eriviere@student.42barcelon      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/13 09:07:59 by eriviere          #+#    #+#             */
-/*   Updated: 2024/11/13 16:37:15 by eriviere         ###   ########.fr       */
+/*   Updated: 2024/11/14 09:23:01 by eriviere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,8 @@ void	error_exit(const char *error)
 long	gettime(t_time_code time_code)
 {
 	struct timeval	tv;
-	if(gettimeofday(&tv, NULL))
+
+	if (gettimeofday(&tv, NULL))
 		error_exit("Error gettimeofday function");
 	if (time_code == SECOND)
 		return (tv.tv_sec + (tv.tv_usec / 1e6));
@@ -34,7 +35,6 @@ long	gettime(t_time_code time_code)
 	return (12345);
 }
 
-//To sleep efficiently while (simulation not finished &) remaining time > 1 millisecond
 void	precise_usleep(long usec, t_table *table)
 {
 	long	start;
@@ -45,10 +45,9 @@ void	precise_usleep(long usec, t_table *table)
 	while (gettime(MICROSECOND) - start < usec)
 	{
 		if (simulation_finished(table))
-			break;
+			break ;
 		elapsed = gettime(MICROSECOND) - start;
 		remaining = usec - elapsed;
-
 		if (remaining > 1e3)
 			usleep(remaining / 2);
 		else

@@ -6,14 +6,14 @@
 /*   By: eriviere <eriviere@student.42barcelon      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/13 08:53:03 by eriviere          #+#    #+#             */
-/*   Updated: 2024/11/13 17:18:00 by eriviere         ###   ########.fr       */
+/*   Updated: 2024/11/14 09:52:55 by eriviere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PHILO_H
 # define PHILO_H
 # include <stdio.h>//printf
-# include <stdlib.h>//malloc & free
+# include <stdlib.h>// EXIT_FAILURE malloc & free
 # include <unistd.h>//usleep (personalize)
 # include <stdbool.h>//booleans
 # include <pthread.h>//threads & mutex
@@ -23,7 +23,7 @@
 # define DEBUG_MODE 0 
 
 //ENUMS//
-typedef enum	e_opcode
+typedef enum e_opcode
 {
 	LOCK,
 	UNLOCK,
@@ -31,17 +31,16 @@ typedef enum	e_opcode
 	CREATE,
 	DESTROY,
 	JOIN,
-	DETACH,
 }				t_opcode;
 
-typedef enum	e_time_code
+typedef enum e_time_code
 {
 	SECOND,
 	MILLISECOND,
 	MICROSECOND,
 }				t_time_code;
 
-typedef enum	e_status
+typedef enum e_status
 {
 	EATING,
 	SLEEPING,
@@ -54,20 +53,20 @@ typedef enum	e_status
 //STRUCTURES//
 
 //mutex
-typedef	pthread_mutex_t t_mtx;
+typedef pthread_mutex_t	t_mtx;
 
 //to include t_table in philo before defining struct
-typedef struct	s_table	t_table;
+typedef struct s_table	t_table;
 
 //fork
-typedef struct	s_fork
+typedef struct s_fork
 {
 	t_mtx	fork;
 	int		fork_id;
 }	t_fork;
 
 //philo
-typedef struct	s_philo
+typedef struct s_philo
 {
 	int			id;
 	long		meals_counter;
@@ -110,7 +109,8 @@ void	parse_input(t_table *table, char **argv);
 //safe functions
 void	*safe_malloc(size_t bytes);
 void	safe_mutex(t_mtx *mutex, t_opcode opcode);
-void	safe_thread(pthread_t *thread, void *(*foo)(void *), void *data, t_opcode opcode);
+void	safe_thread(pthread_t *thread, void *(*foo)(void *),
+			void *data, t_opcode opcode);
 
 //data init
 void	data_init(t_table *table);

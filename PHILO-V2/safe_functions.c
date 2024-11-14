@@ -6,7 +6,7 @@
 /*   By: eriviere <eriviere@student.42barcelon      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/13 09:31:49 by eriviere          #+#    #+#             */
-/*   Updated: 2024/11/13 09:54:50 by eriviere         ###   ########.fr       */
+/*   Updated: 2024/11/14 09:25:53 by eriviere         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,16 +28,17 @@ static void	error_mutex(int status, t_opcode opcode)
 {
 	if (status == 0)
 		return ;
-	if (status == EINVAL && (opcode == LOCK || opcode == UNLOCK || opcode == DESTROY))
+	if (status == EINVAL && (opcode == LOCK || opcode == UNLOCK
+			|| opcode == DESTROY))
 		error_exit("The value specified by mutex is invalid.");
 	else if (status == EINVAL && opcode == INIT)
 		error_exit("The value specified by attr is invalid.");
 	else if (status == EDEADLK)
-		error_exit("A deadlock would occur if the thread blocked waiting for mutex.");
+		error_exit("A deadlock would occur if blocked waiting for mutex.");
 	else if (status == EPERM)
 		error_exit("The current thread does not hold a lock on mutex.");
 	else if (status == ENOMEM)
-		error_exit("The process cannot allocate enough memory to create another mutex.");
+		error_exit("The process cannot allocate memory for another mutex.");
 	else if (status == EBUSY)
 		error_exit("Mutex is locked.");
 }
@@ -46,7 +47,7 @@ static void	error_mutex(int status, t_opcode opcode)
 void	safe_mutex(t_mtx *mutex, t_opcode opcode)
 {
 	if (opcode == LOCK)
-		error_mutex(pthread_mutex_lock(mutex), opcode);	
+		error_mutex(pthread_mutex_lock(mutex), opcode);
 	else if (opcode == UNLOCK)
 		error_mutex(pthread_mutex_unlock(mutex), opcode);
 	else if (opcode == INIT)
@@ -73,7 +74,7 @@ static	void	error_thread(int status, t_opcode opcode)
 	else if (status == ESRCH)
 		error_exit("No thread found with the given thread ID.");
 	else if (status == EDEADLK)
-		error_exit("A deadlock was detected or the value of thread specifies the calling thread.");
+		error_exit("A deadlock was detected.");
 }
 
 void	safe_thread(pthread_t *thread, void *(*foo)(void *),
@@ -83,9 +84,6 @@ void	safe_thread(pthread_t *thread, void *(*foo)(void *),
 		error_thread(pthread_create(thread, NULL, foo, data), opcode);
 	else if (opcode == JOIN)
 		error_thread(pthread_join(*thread, NULL), opcode);
-	else if (opcode == DETACH)
-		error_thread(pthread_detach(*thread), opcode);
 	else
 		error_exit("Wrong thread code");
 }
-
